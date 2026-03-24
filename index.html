@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Isaac Teo — IntraTerrain</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --text: #0d0d0d;
+    --muted: #666666;
+    --accent: #0d0d0d;
+    --accent-light: #f2f2f2;
+    --border: #e0e0e0;
+    --serif: 'Georgia', 'Times New Roman', serif;
+    --sans: 'Helvetica Neue', Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); line-height: 1.7; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; background: var(--bg);
+    border-bottom: 1px solid var(--border); z-index: 100;
+    padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;
+  }
+  nav .logo { font-family: var(--serif); font-size: 1.1rem; letter-spacing: 0.02em; color: var(--text); text-decoration: none; }
+  nav ul { list-style: none; display: flex; gap: 2rem; }
+  nav ul a { text-decoration: none; color: var(--muted); font-size: 0.875rem; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.2s; }
+  nav ul a:hover { color: var(--text); }
+  nav ul a.active { color: var(--text); border-bottom: 1.5px solid var(--text); padding-bottom: 2px; }
+
+  /* SECTIONS */
+  section { padding: 6rem 2rem; max-width: 720px; margin: 0 auto; }
+
+  /* HERO */
+  #hero { padding-top: 9rem; min-height: 90vh; display: flex; flex-direction: column; justify-content: center; }
+  .eyebrow { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 1.2rem; }
+  h1 { font-family: var(--serif); font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.2; font-weight: normal; margin-bottom: 1.5rem; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .hero-sub { font-size: 1.1rem; color: var(--muted); max-width: 520px; margin-bottom: 2.5rem; }
+  .cta-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 0.75rem 1.75rem; border-radius: 2px; font-size: 0.875rem; text-decoration: none; letter-spacing: 0.04em; transition: all 0.2s; }
+  .btn-primary { background: var(--text); color: #fff; }
+  .btn-primary:hover { background: #333; }
+  .btn-secondary { border: 1px solid #ccc; color: var(--text); }
+  .btn-secondary:hover { border-color: var(--text); }
+
+  /* DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--border); max-width: 720px; margin: 0 auto; }
+
+  /* ABOUT */
+  h2 { font-family: var(--serif); font-size: 1.9rem; font-weight: normal; margin-bottom: 1.5rem; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  .about-text p { color: var(--muted); margin-bottom: 1rem; font-size: 1rem; }
+  .about-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+  .tag { background: var(--accent-light); color: var(--accent); font-size: 0.78rem; padding: 0.3rem 0.8rem; border-radius: 20px; letter-spacing: 0.04em; }
+  .about-aside { background: var(--accent-light); border-left: 3px solid var(--accent); padding: 1.5rem; border-radius: 2px; }
+  .about-aside p { font-family: var(--serif); font-size: 1.05rem; font-style: italic; color: var(--text); margin-bottom: 0.8rem; }
+  .about-aside a { font-size: 0.875rem; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); }
+  .about-aside a:hover { opacity: 0.8; }
+
+  /* WHO I WORK WITH */
+  .who-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
+  .who-card { border: 1px solid var(--border); padding: 1.75rem; border-radius: 2px; }
+  .who-icon { font-size: 1.2rem; display: block; margin-bottom: 0.75rem; }
+  .who-card h3 { font-family: var(--serif); font-size: 1rem; font-weight: normal; margin-bottom: 0.75rem; line-height: 1.4; }
+  .who-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+  @media (max-width: 700px) { .who-grid { grid-template-columns: 1fr; } }
+
+  /* SUBSTACK */
+  #writing { background: var(--accent-light); max-width: 100%; padding: 5rem 2rem; }
+  #writing .inner { max-width: 720px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem; }
+  #writing h2 { margin-bottom: 0.5rem; }
+  #writing p { color: var(--muted); max-width: 420px; }
+  .substack-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: #ff6314; color: #fff; padding: 0.75rem 1.5rem; border-radius: 2px; text-decoration: none; font-size: 0.875rem; letter-spacing: 0.04em; transition: background 0.2s; white-space: nowrap; }
+  .substack-btn:hover { background: #e0530f; }
+  .substack-btn svg { width: 16px; height: 16px; fill: #fff; }
+
+  /* TESTIMONIALS */
+  .testimonials-grid { display: grid; gap: 1.5rem; margin-top: 0.5rem; }
+  .testimonial-card { border: 1px solid var(--border); padding: 1.75rem; border-radius: 2px; background: #fff; }
+  .testimonial-card blockquote { font-family: var(--serif); font-size: 1.05rem; font-style: italic; color: var(--text); margin-bottom: 1rem; line-height: 1.6; }
+  .testimonial-card cite { font-size: 0.82rem; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; font-style: normal; }
+
+  /* CONTACT */
+  form { display: flex; flex-direction: column; gap: 1.2rem; margin-top: 1rem; }
+  label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); display: block; margin-bottom: 0.3rem; }
+  input, textarea { width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border); background: #fff; border-radius: 2px; font-family: var(--sans); font-size: 1rem; color: var(--text); transition: border-color 0.2s; outline: none; }
+  input:focus, textarea:focus { border-color: var(--accent); }
+  textarea { resize: vertical; min-height: 130px; }
+  .form-submit { align-self: flex-start; }
+  .contact-note { font-size: 0.875rem; color: var(--muted); margin-top: 0.5rem; }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; font-size: 0.82rem; color: var(--muted); }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .about-grid { grid-template-columns: 1fr; }
+    nav ul { gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="#hero">IntraTerrain</a>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#who">Who I work with</a></li>
+    <li><a href="#writing">Writing</a></li>
+    <li><a href="#testimonials">Testimonials</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <p class="eyebrow">Somatic Coaching · BJJ · Embodied Living</p>
+  <h1>Living your best life<br><em>on and off the mats.</em></h1>
+  <p class="hero-sub">A coaching practice focused on generating possibilities and new pathways for what matters to you — working through the body, not just the mind.</p>
+  <div class="cta-row">
+    <a href="#contact" class="btn btn-primary">Start a conversation</a>
+    <a href="#about" class="btn btn-secondary">Learn more</a>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text">
+      <h2>About Isaac</h2>
+      <p>I'm a somatic coach and Brazilian Jiu-Jitsu purple belt based in Singapore. My work sits at the intersection of body awareness, nervous system regulation, and the kind of honest self-inquiry that happens when you're under pressure on the mat.</p>
+      <p>After years of training, teaching, and sitting with people in hard conversations, I've come to believe that the body doesn't lie — and that real change begins when we stop treating it as an afterthought.</p>
+      <p>I work with individuals who are curious, honest, and ready to move beyond talking about change to actually feeling it.</p>
+      <div class="about-tags">
+        <span class="tag">Somatic Coaching</span>
+        <span class="tag">BJJ Purple Belt</span>
+        <span class="tag">Nervous System</span>
+        <span class="tag">Body Awareness</span>
+        <span class="tag">Singapore</span>
+      </div>
+    </div>
+    <div>
+      <div class="about-aside">
+        <p>"Insights into living your best life on and off the mats."</p>
+        <p style="font-size:0.875rem; color:var(--muted); font-style:normal; margin-bottom:1rem;">Read my ongoing writing on somatic practice, embodied living, and lessons from the mat.</p>
+        <a href="https://intraterrain.substack.com" target="_blank" rel="noopener">Read IntraTerrain on Substack →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- WHO I WORK WITH -->
+<section id="who">
+  <p class="eyebrow">Who I work with</p>
+  <h2>You might be here because—</h2>
+  <div class="who-grid">
+    <div class="who-card">
+      <span class="who-icon">↗</span>
+      <h3>You want to make a change in your career</h3>
+      <p>You're ready to move forward or make a mid-career switch, but find yourself stuck — unable to gain clarity on the right course of action.</p>
+    </div>
+    <div class="who-card">
+      <span class="who-icon">◈</span>
+      <h3>You want to lead better</h3>
+      <p>As an organisational leader, SME owner, or team lead, you understand that leading better brings more powerful outcomes — but you're unsure how to take that step.</p>
+    </div>
+    <div class="who-card">
+      <span class="who-icon">⊙</span>
+      <h3>Something is standing in your way</h3>
+      <p>Your goal could be becoming a better father, feeling less nervous in public speaking, or having more powerful conversations with loved ones — and you notice you're not making progress.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- SUBSTACK CALLOUT -->
+<div id="writing">
+  <div class="inner">
+    <div>
+      <h2>IntraTerrain</h2>
+      <p>Essays on somatic practice, the wisdom of the mat, and what it means to live from the inside out. Published on Substack.</p>
+    </div>
+    <a href="https://intraterrain.substack.com" target="_blank" rel="noopener" class="substack-btn">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>
+      Subscribe on Substack
+    </a>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <p class="eyebrow">What people say</p>
+  <h2>Testimonials</h2>
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <blockquote>"I took several coaching sessions with Isaac Teo on emotional intelligence from November 2021 to January 2022. I found him an amazing coach. He helped me bring my most authentic self in the coaching sessions, deepen my self-awareness, build my self-confidence and cope with the mounting workplace pressure. His thoughtful observations helped me increase my self-awareness and I now discover myself every day and make each interaction in my personal and professional life both meaningful and engaging. Isaac is unique in his coaching style and highly adaptive, supportive and encouraging."</blockquote>
+      <cite>— S.S. Sadaat, NGO staff based in Afghanistan</cite>
+    </div>
+    <div class="testimonial-card">
+      <blockquote>"My coaching sessions with Isaac have been very insightful. He asked the right (and sometimes challenging) questions that dug deeper into the "whys" and the emotions that came with them. He made me question my doubts, reframed the stories I told myself and guided me towards being my authentic self, and especially applying to leadership style at work. A very personable and encouraging coach, I felt at ease sharing my thoughts and emotions throughout the sessions. There were a few ah-ha moments and valuable observations that made me more self-aware and evolved my approach at work and life. Definitely a coach to recommend!"</blockquote>
+      <cite>— Peiling L., Senior Marketing Manager in the Sporting Goods Industry</cite>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="eyebrow">Get in touch</p>
+  <h2>Start a conversation</h2>
+  <p style="color:var(--muted); margin-bottom:2rem;">If something here resonates, I'd love to hear from you. No pressure, no pitch — just a conversation.</p>
+  <form onsubmit="handleSubmit(event)">
+    <div>
+      <label for="name">Name</label>
+      <input type="text" id="name" placeholder="Your name" required/>
+    </div>
+    <div>
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="your@email.com" required/>
+    </div>
+    <div>
+      <label for="message">Message</label>
+      <textarea id="message" placeholder="What's on your mind?" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary form-submit">Send message</button>
+  </form>
+  <p class="contact-note" id="form-status"></p>
+</section>
+
+<footer>
+  <p>© 2026 Isaac Teo · <a href="https://intraterrain.substack.com" target="_blank">IntraTerrain on Substack</a> · Singapore</p>
+</footer>
+
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.getElementById('form-status').textContent = "Thanks — I'll be in touch soon.";
+    e.target.reset();
+  }
+
+  // Active nav highlight on scroll
+  const navLinks = document.querySelectorAll('nav ul a');
+      const sections = ['hero', 'about', 'who', 'writing', 'testimonials', 'contact'].map(id => document.getElementById(id));
+
+  function onScroll() {
+    const scrollY = window.scrollY + 100;
+    let current = sections[0];
+    for (const sec of sections) {
+      if (sec && sec.offsetTop <= scrollY) current = sec;
+    }
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current.id);
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
+
+</body>
+</html>
